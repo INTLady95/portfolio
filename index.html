@@ -882,6 +882,24 @@
   }
   footer .sep { color: var(--edge); margin: 0 10px; }
 
+  /* ── тихая полоска-подпись: связывает публичные страницы между собой ── */
+  .sitenav {
+    margin: 26px 0 0; padding: 18px 0 0;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px;
+    border-top: 1px solid var(--edge-soft);
+    font-family: var(--fb); font-size: 12.5px; line-height: 1.7;
+    letter-spacing: 0; text-transform: none; text-align: left;
+  }
+  .sitenav .sn-who { font-family: var(--fd); font-style: italic; font-size: 16px; color: var(--ink-soft); white-space: nowrap; }
+  .sitenav .sn-links { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; min-width: 0; }
+  .sitenav a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color .18s, border-color .18s; }
+  .sitenav a:hover { color: var(--gold); border-bottom-color: var(--edge); }
+  .sitenav .sn-here { color: var(--muted); opacity: .45; }
+  .sitenav .sn-go { margin-left: auto; color: var(--gold); white-space: nowrap; }
+  .sitenav .sn-go:hover { border-bottom-color: var(--gold); }
+  .sitenav + footer { padding-top: 20px; }
+  @media (max-width: 640px) { .sitenav .sn-go { margin-left: 0; } }
+
   @media (max-width: 880px) {
     .container { padding: 0 20px; }
     .hero { grid-template-columns: 1fr; gap: 36px; padding: 48px 0 36px; }
@@ -2785,6 +2803,19 @@
 
   <div class="farewell"><span class="fs">✦</span> See you soon — have a wonderful day <span class="fs">✦</span></div>
 
+  <!-- ── полоска-подпись: переход на остальные публичные страницы ── -->
+  <nav class="sitenav" aria-label="More pages">
+    <span class="sn-who">Tatsiana Zhukavets</span>
+    <span class="sn-links">
+      <span class="sn-here">Interactive Portfolio</span>
+      <a href="https://intlady95.github.io/summary/">Executive Summary</a>
+      <a href="https://intlady95.github.io/high-pitch/">High Pitch</a>
+      <a href="https://intlady95.github.io/fitting-room/">The Fitting Room</a>
+      <a href="https://intlady95.github.io/links/">All links</a>
+    </span>
+    <a class="sn-go" href="https://intlady95.github.io/anketa/">Start your project →</a>
+  </nav>
+
   <footer>
     Tatsiana Zhukavets <span class="sep">·</span> Portfolio <span class="sep">·</span> 2026 <span class="sep">·</span> <a href="https://www.linkedin.com/in/tatsiana-zhukavets/" target="_blank" rel="noopener">LinkedIn</a>
   </footer>
@@ -3386,6 +3417,19 @@
 
   <div class="farewell"><span class="fs">✦</span> Do zobaczenia — miłego dnia <span class="fs">✦</span></div>
 
+  <!-- ── полоска-подпись: переход на остальные публичные страницы ── -->
+  <nav class="sitenav" aria-label="More pages">
+    <span class="sn-who">Tatsiana Zhukavets</span>
+    <span class="sn-links">
+      <span class="sn-here">Interaktywne portfolio</span>
+      <a href="https://intlady95.github.io/summary/">Executive Summary</a>
+      <a href="https://intlady95.github.io/high-pitch/">High Pitch</a>
+      <a href="https://intlady95.github.io/fitting-room/">Przymierzalnia</a>
+      <a href="https://intlady95.github.io/links/">Wszystkie linki</a>
+    </span>
+    <a class="sn-go" href="https://intlady95.github.io/anketa/">Zacznij projekt →</a>
+  </nav>
+
   <footer>
     Tatsiana Zhukavets <span class="sep">·</span> Portfolio <span class="sep">·</span> 2026 <span class="sep">·</span> <a href="https://www.linkedin.com/in/tatsiana-zhukavets/" target="_blank" rel="noopener">LinkedIn</a>
   </footer>
@@ -3986,6 +4030,19 @@
   </section>
 
   <div class="farewell"><span class="fs">✦</span> До скорой встречи — и хорошего дня <span class="fs">✦</span></div>
+
+  <!-- ── полоска-подпись: переход на остальные публичные страницы ── -->
+  <nav class="sitenav" aria-label="More pages">
+    <span class="sn-who">Татьяна Жуковец</span>
+    <span class="sn-links">
+      <span class="sn-here">Интерактивное портфолио</span>
+      <a href="https://intlady95.github.io/summary/">Executive Summary</a>
+      <a href="https://intlady95.github.io/high-pitch/">High Pitch</a>
+      <a href="https://intlady95.github.io/fitting-room/">Примерочная</a>
+      <a href="https://intlady95.github.io/links/">Все ссылки</a>
+    </span>
+    <a class="sn-go" href="https://intlady95.github.io/anketa/">Начать проект →</a>
+  </nav>
 
   <footer>
     Татьяна Жуковец <span class="sep">·</span> Портфолио <span class="sep">·</span> 2026 <span class="sep">·</span> <a href="https://www.linkedin.com/in/tatsiana-zhukavets/" target="_blank" rel="noopener">LinkedIn</a>
