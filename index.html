@@ -2131,21 +2131,12 @@
 
   /* ═══ GLANCE: hero stat + 4 compact ═══ */
   .l1-glance .grid { grid-template-columns: repeat(4, 1fr); }
-  .stat.hero { grid-column: 1 / -1; display: flex; align-items: center; gap: 28px; padding: 24px 28px; }
+  .stat.hero { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; text-align: left; gap: 28px; padding: 24px 28px; }
   .stat.hero .num { font-size: clamp(48px, 5vw, 76px); }
   .stat.hero .caption { font-size: 14.5px; line-height: 1.5; max-width: 320px; margin-top: 0; }
-  .hero-products { display: flex; flex-direction: column; gap: 8px; margin-left: auto; }
-  .hp {
-    font-size: 12.5px; color: var(--ink-soft);
-    border: 1px solid var(--edge-soft); border-radius: 100px;
-    padding: 7px 15px; background: var(--glass); white-space: nowrap;
-  }
-  .hp b { color: var(--gold); font-weight: 600; }
   @media (max-width: 999px) {
     .l1-glance .grid { grid-template-columns: repeat(2, 1fr); }
     .stat.hero { flex-wrap: wrap; gap: 14px; }
-    .hero-products { margin-left: 0; width: 100%; }
-    .hp { white-space: normal; }
   }
 </style>
 </head>
