@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- страница обновляется часто: браузер обязан переспросить сервер,
+     иначе гость видит вчерашнюю версию из кэша -->
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>Tatsiana Zhukavets — interactive portfolio · career packaging</title>
 <meta name="description" content="An interactive portfolio built the way I build them for clients: your story, your style, one live link. This page is a sample of my own work.">
 
@@ -2138,6 +2141,55 @@
     .stat.hero { flex-wrap: wrap; gap: 14px; }
   }
 </style>
+<script>
+/* ══ Общая тема сайта ═══════════════════════════════════════════════
+   Все страницы живут на одном домене, поэтому выбор темы хранится
+   один раз (tz-theme) и действует везде: хаб → примеры → форма заказа.
+   Порядок решения: ?theme= в адресе → общая память → старый ключ этой
+   страницы (чтобы выбор прежних гостей не потерялся) → тёмная. ══ */
+window.TZ = (function () {
+  var KEY = 'tz-theme';
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function fromUrl() {
+    try {
+      var v = new URLSearchParams(location.search).get('theme');
+      return (v === 'light' || v === 'dark') ? v : null;
+    } catch (e) { return null; }
+  }
+  return {
+    get: function (legacy) {
+      /* пришли по ссылке с темой — запоминаем сразу: дальше по сайту
+         человек идёт уже с ней, даже если ссылки без параметра */
+      var url = fromUrl();
+      if (url) { this.save(url); return url; }
+      var v = read(KEY);
+      if (v !== 'light' && v !== 'dark') {
+        var old = legacy ? read(legacy) : null;
+        if (old) v = (old === 'light' ? 'light' : 'dark');
+      }
+      return v === 'light' ? 'light' : 'dark';
+    },
+    save: function (mode) {
+      try { localStorage.setItem(KEY, mode === 'light' ? 'light' : 'dark'); } catch (e) {}
+    },
+    /* ?theme= из адреса убираем: тема уже применена и запомнена */
+    clean: function () {
+      try {
+        var u = new URL(location.href);
+        if (!u.searchParams.has('theme')) return;
+        u.searchParams.delete('theme');
+        history.replaceState(null, '', u.pathname + (u.search || '') + u.hash);
+      } catch (e) {}
+    },
+    /* тему переключили в соседней вкладке — подхватываем на лету */
+    follow: function (apply) {
+      window.addEventListener('storage', function (e) {
+        if (e.key === KEY && (e.newValue === 'light' || e.newValue === 'dark')) apply(e.newValue);
+      });
+    }
+  };
+})();
+</script>
 </head>
 <body>
 <span class="state-anchor" id="c-en-d"></span><span class="state-anchor" id="c-en-l"></span><span class="state-anchor" id="c-pl-d"></span><span class="state-anchor" id="c-pl-l"></span><span class="state-anchor" id="c-ru-d"></span><span class="state-anchor" id="c-ru-l"></span>
@@ -4094,11 +4146,12 @@
       btn.textContent = currentTheme === 'light' ? '☾' : '☀';
     });
   }
-  function setTheme(theme) {
+  function setTheme(theme, save) {
     if (theme !== 'neon' && theme !== 'light') return;
     currentTheme = theme;
     applyTheme();
-    safeSet('presentation-theme', theme);
+    /* тема общая на весь сайт: 'neon' здесь = тёмная везде */
+    if (save !== false) window.TZ.save(theme === 'light' ? 'light' : 'dark');
   }
 
   /* ── Language ── */
@@ -4186,9 +4239,10 @@
     backBtn = document.getElementById('back-jump');
 
     /* theme */
-    var storedTheme = safeGet('presentation-theme');
-    currentTheme = storedTheme === 'light' ? 'light' : 'neon';
+    currentTheme = window.TZ.get('presentation-theme') === 'light' ? 'light' : 'neon';
     applyTheme();
+    window.TZ.clean();
+    window.TZ.follow(function (m) { setTheme(m === 'light' ? 'light' : 'neon', false); });
     forEach(document.querySelectorAll('.theme-toggle'), function(btn) {
       btn.addEventListener('click', function() {
         setTheme(currentTheme === 'light' ? 'neon' : 'light');
@@ -4732,7 +4786,7 @@
       document.body.classList.remove('simple');
       btn.textContent = t === 'light' ? '🌙' : '☀';
       btn.title = t === 'light' ? 'Dark theme' : 'Light theme';
-      try { localStorage.setItem('presentation-theme', t); } catch (e) {}
+      if (notify) window.TZ.save(t === 'light' ? 'light' : 'dark');   /* тема общая на весь сайт */
       if (notify) {
         try { document.dispatchEvent(new CustomEvent('cv:theme', { detail: t })); } catch (e) {}
       }
@@ -4740,11 +4794,9 @@
     btn.addEventListener('click', function() {
       apply(current === 'light' ? 'neon' : 'light', true);
     });
-    var stored = null;
-    try { stored = localStorage.getItem('presentation-theme'); } catch (e) {}
-    if (stored === 'simple-light') stored = 'light';
-    if (stored !== 'light') stored = 'neon';
+    var stored = window.TZ.get('presentation-theme') === 'light' ? 'light' : 'neon';
     apply(stored, false);
+    window.TZ.follow(function (m) { apply(m === 'light' ? 'light' : 'neon', false); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
